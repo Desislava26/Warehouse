@@ -4,7 +4,8 @@ using Warehouse.Core.Models;
 using Warehouse.Infrastructure.Data.Identity;
 using Warehouse.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-
+using System.Web.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace Warehouse.Core.Services
 {
@@ -12,9 +13,16 @@ namespace Warehouse.Core.Services
     {
         private readonly IApplicatioDbRepository repo;
 
+
         public UserService(IApplicatioDbRepository _repo)
         {
             this.repo = _repo;
+        }
+
+        public async Task<ApplicationUser> GetUserById(string id)
+        {
+           return await repo.GetByIdAsync<ApplicationUser>(id);
+
         }
 
         public async Task<UserEditViewModel> GetUserForEdit(string id)
@@ -29,6 +37,7 @@ namespace Warehouse.Core.Services
             };
                 
         }
+
 
         public async Task<IEnumerable<UserListViewModel>> GetUsers()
         {

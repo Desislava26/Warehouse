@@ -8,6 +8,8 @@ using Warehouse.Core.Contracts;
 using Warehouse.Infrastructure.Data.Identity;
 using Warehouse.Core.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Warehouse.Areas.Admin.Controllers
 {
@@ -43,12 +45,40 @@ namespace Warehouse.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Roles(string id)
         {
-            //var model = await service.GetUserForEdit(id);
-            //return View(model);
-            return Ok(id);
+            var user = await service.GetUserById(id);
+            var model = new UserRolesViewModel()
+            {
+                UserId = user.Id, //in the roles view, it shoud be UserId : <input type="hidden" name="UserId" value="@Model.UserId" />
+                Name = $"{user.FirstName} {user.LastName}" //the same with the name, if they are different here and in the view it throws exeption
+            };
+
+
+            ViewBag.RoleItems = roleManager.Roles
+                .ToList()
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Name,
+                    Selected = userManager.IsInRoleAsync(user, r.Name).Result
+                }).ToList();
+
+            return View(model);
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Roles(UserRolesViewModel model)
+        {
+            var user = await service.GetUserById(model.UserId);
+            var userRoles = await userManager.GetRolesAsync(user);
+            await userManager.RemoveFromRolesAsync(user, userRoles);
+
+            if (model.RoleNames?.Length > 0) //we shoud check and only add, if marked roles arent null
+            {
+                await userManager.AddToRolesAsync(user, model.RoleNames);
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
         public async Task<IActionResult> Edit(string id)
         {
             var model = await service.GetUserForEdit(id);
@@ -80,7 +110,7 @@ namespace Warehouse.Areas.Admin.Controllers
             //comment for now if i want to create new role
             //await roleManager.CreateAsync(new IdentityRole()
             //{
-            //    Name = "Administrator"
+            //    Name = "HouseKeeper"
             //});
             return Ok();
 

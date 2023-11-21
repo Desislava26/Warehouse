@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Warehouse.Core.Models;
+using Warehouse.Infrastructure.Data.Identity;
 //using Warehouse.Core.Models;
 //using Warehouse.Infrastructure.Data.Identity;
 
@@ -17,6 +19,6 @@ namespace Warehouse.Core.Contracts
 
         Task<bool> UpdateUser(UserEditViewModel model);
 
-        //Task<ApplicationUser> GetUserById(string id);
+        Task<ApplicationUser> GetUserById(string id);
     }
 }
