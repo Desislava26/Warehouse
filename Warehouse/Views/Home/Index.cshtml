@@ -1,6 +1,8 @@
-﻿@*@model string*@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@*@model string*@
+@inject IViewLocalizer localizer // @*we use the localizer to translate*@
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = localizer["PageTitle"];
 }
 
 <div class="text-center">

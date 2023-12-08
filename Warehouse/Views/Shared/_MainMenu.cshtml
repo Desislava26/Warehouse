@@ -1,4 +1,17 @@
-﻿<!-- Sidebar Menu -->
+﻿@using Microsoft.AspNetCore.Identity
+@using Warehouse.Core.Models
+@using Warehouse.Infrastructure.Data.Identity
+@*@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var isInRole = await UserManager.IsInRoleAsync(user, "Administrator");
+    var redirectPath = "/";
+    if(isInRole == true){
+        redirectPath = "~/Admin/Home/Index";
+    }
+}*@
+<!-- Sidebar Menu -->
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         
@@ -8,7 +21,17 @@
             <p>
                Home
             </p>
+            
         </a>
+        <a href="~/Home/UploadFile" class="nav-link">
+            <i class="fas fa-upload"></i>
+            @*<i class="fa-regular fa-house"></i>*@
+            <p>
+                Upload File
+            </p>
+
+        </a>
+       
         
         
         

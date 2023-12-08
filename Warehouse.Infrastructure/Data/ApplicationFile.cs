@@ -16,5 +16,7 @@ namespace Warehouse.Infrastructure.Data
 
         public byte[] Content  { get; set; }
 
+
+
     }
 }

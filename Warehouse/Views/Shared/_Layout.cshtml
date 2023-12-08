@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var routeData = ViewContext.RouteData.Values;
+    routeData["culture"] = "{0}";
+}
+<!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
@@ -46,6 +50,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <language-nav redirect-to-url="@Url.RouteUrl(routeData)"> cookie-handles-url="@Url.Action("SetCultureCookie", "Home", new{area = "", cltr = "{0}", returnUrl = "{0}"})"</language-nav>
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -79,6 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <partial name="_CookieConsentPartial" />
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">

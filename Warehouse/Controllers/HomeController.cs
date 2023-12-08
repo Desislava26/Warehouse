@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Diagnostics;
 using Warehouse.Core.Constants;
 using Warehouse.Core.Contracts;
+using Warehouse.Core.Models;
 using Warehouse.Infrastructure.Data;
 using Warehouse.Models;
 
@@ -53,6 +55,7 @@ namespace Warehouse.Controllers
             return View();
         }
 
+        
 
         [HttpGet]
         public IActionResult UploadFile()
@@ -98,5 +101,33 @@ namespace Warehouse.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult SetCultureCookie(string cltr, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cltr)),
+                new CookieOptions
+                {
+                    Expires = DateTime.UtcNow.AddDays(10),
+                    SameSite = SameSiteMode.Strict
+                }
+                );
+            return LocalRedirect(returnUrl);
+        }
+       
+        //public IActionResult UserProfile()
+        //{
+            
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public IActionResult UpdateProfilePicture(UserEditViewModel model)
+        //{
+            
+           
+        //    return View();
+        //}
     }
 }

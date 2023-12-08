@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Warehouse.Core.Constants;
 using Warehouse.Infrastructure.Data;
 using Warehouse.Infrastructure.Data.Identity;
@@ -26,14 +29,36 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
         options.ModelBinderProviders.Insert(1, new DateTimeModelBinderProvider(FormatingConstant.NormalDateFormat));
         options.ModelBinderProviders.Insert(2, new DoubleModelBinderProvider());
-    });
+    })
+    .AddMvcLocalization(LanguageViewLocationExpanderFormat.Suffix);
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    // This lambda determines whether user consent for non-essential 
+    // cookies is needed for a given request.
+    options.CheckConsentNeeded = context => true;
+
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 
 //builder.Services.AddStackExchangeRedisCache(options =>
 //{
 //    options.Configuration = builder.Configuration.GetConnectionString("Redis");
 //});
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resourses");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedLanguages = new CultureInfo[]
+    {
+        new CultureInfo("bg"),
+        new CultureInfo("en")
+    };
 
+    options.DefaultRequestCulture = new RequestCulture("bg");
+    options.SupportedCultures = supportedLanguages;
+    options.SupportedUICultures = supportedLanguages;
+});
 
 builder.Services.AddAuthentication()
     .AddFacebook(options =>

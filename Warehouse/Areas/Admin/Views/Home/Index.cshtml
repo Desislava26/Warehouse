@@ -1,4 +1,6 @@
-﻿@{
+﻿﻿@using Warehouse.Core.Models
+@model UserEditViewModel
+@{
     ViewData["Title"] = "Home Page of Area ADMIN";
 }
 
@@ -6,3 +8,17 @@
     <h1 class="display-4">Welcome to Admin area</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<form method="post">
+<a href=~/Admin/User/ManageUsers class="btn btn-app bg-success">
+    <span class="badge bg-purple">891</span>
+    <i class="fas fa-users"></i> Users
+</a>
+    <a class="btn btn-app bg-secondary">
+        <span class="badge bg-success">300</span>
+        <i class="fas fa-barcode"></i> Products
+    </a>
+    <a class="btn btn-app bg-danger">
+        <span class="badge bg-teal">67</span>
+        <i class="fas fa-inbox"></i> Orders
+    </a>
+</form>

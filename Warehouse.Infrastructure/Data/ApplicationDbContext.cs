@@ -23,11 +23,24 @@ namespace Warehouse.Infrastructure.Data
         public DbSet<DealSubject> DealSubjects { get; set; }
 
         public DbSet<ApplicationFile> Files { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Contragent>()
                 .HasIndex(c => c.CustomNumber)
                 .IsUnique();
+
+            modelBuilder.Entity<ApplicationFile>()
+                .Property(c => c.Content)
+                .HasMaxLength(1024); //bytes
+
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(c => c.ProfilePicture)
+                .HasMaxLength(1024);
+
+
+
 
             base.OnModelCreating(modelBuilder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
